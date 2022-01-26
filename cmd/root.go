@@ -3,8 +3,12 @@ package cmd
 import (
 	"os"
 
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
+
+var debugLevel int16
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -19,6 +23,24 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
+		switch debugLevel {
+		case -1:
+			zerolog.SetGlobalLevel(zerolog.TraceLevel)
+		case 0:
+			zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		case 1:
+			zerolog.SetGlobalLevel(zerolog.InfoLevel)
+		case 2:
+			zerolog.SetGlobalLevel(zerolog.WarnLevel)
+		case 3:
+			zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+		default:
+			zerolog.SetGlobalLevel(zerolog.InfoLevel)
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -31,13 +53,5 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.lid.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().Int16VarP(&debugLevel, "debuglevel", "d", 1, "debug level")
 }
