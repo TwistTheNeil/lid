@@ -8,31 +8,17 @@ import (
 	"os"
 )
 
-func Size(f os.File) (int64, error) {
-	info, err := f.Stat()
-	if err != nil {
-		return 0, err
-	}
-
-	return info.Size(), nil
-}
-
-func MD5Hash(filename string) string {
+func MD5Hash(f *os.File) string {
 	log := logger.CreateLogger("file_ops.Hash")
-	log.Trace("hashing " + filename)
+	log.Trace("hashing " + f.Name())
 
 	h := md5.New()
-	f, err := os.Open(filename)
-	if err != nil {
-		log.Error("something went wrong opening file", err, "file", filename)
-		return ""
-	}
-
 	buf := make([]byte, 1024*1024)
+
 	for {
 		bytesRead, err := f.Read(buf)
 		if err != nil && err != io.EOF {
-			log.Error("something went wrong reading from file", err, "file", filename)
+			log.Error("something went wrong reading from file", err, "file", f.Name())
 			return ""
 		}
 		h.Write(buf[:bytesRead])
@@ -42,6 +28,6 @@ func MD5Hash(filename string) string {
 	}
 
 	computedHash := hex.EncodeToString(h.Sum(nil))
-	log.Info("computed hash", "file", filename, "hash", computedHash)
+	log.Info("computed hash", "node", f.Name(), "hash", computedHash)
 	return computedHash
 }

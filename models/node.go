@@ -17,7 +17,14 @@ type Node struct {
 func (n *Node) Hash() {
 	log := logger.CreateLogger("node.Hash")
 	log.Trace("node.Hash called")
-	n.MD5 = file_ops.MD5Hash(n.Name)
+
+	f, err := os.Open(n.Name)
+	if err != nil {
+		log.Error("something went wrong opening file", err, "file", n.Name)
+	}
+	defer f.Close()
+
+	n.MD5 = file_ops.MD5Hash(f)
 }
 
 type NodeList struct {
@@ -29,7 +36,7 @@ func (nl NodeList) Append(n Node) NodeList {
 	return nl
 }
 
-func (nl NodeList) Print() {
+func (nl NodeList) Pretty() {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Hash", "File Name", "Size (bytes)"})
