@@ -35,7 +35,7 @@ var analyzeCmd = &cobra.Command{
 
 			newNode := models.Node{Name: filename, Size: fileStat.Size()}
 			newNode.Hash()
-			nl = nl.Append(newNode)
+			nl.Append(newNode)
 		}
 
 		if tabulate {

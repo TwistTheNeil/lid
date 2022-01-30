@@ -31,12 +31,11 @@ type NodeList struct {
 	Nodes []Node
 }
 
-func (nl NodeList) Append(n Node) NodeList {
+func (nl *NodeList) Append(n Node) {
 	nl.Nodes = append(nl.Nodes, n)
-	return nl
 }
 
-func (nl NodeList) Pretty() {
+func (nl *NodeList) Pretty() {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Hash", "File Name", "Size (bytes)"})
