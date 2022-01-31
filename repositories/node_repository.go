@@ -1,10 +1,10 @@
 package repsitories
 
 type NodeRepository interface {
-	Create(string, string, int64)
-	FindByName(string)
-	FindByMD5(string)
+	Create(node_name string, node_hash string, node_size int64)
+	FindByName(node_name string)
+	FindByMD5(node_md5_hash string)
 	FindAll()
-	DeleteByName(string)
-	DeleteByMD5(string)
+	DeleteByName(node_name string)
+	DeleteByMD5(node_md5_hash string)
 }

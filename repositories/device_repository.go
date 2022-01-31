@@ -1,10 +1,10 @@
 package repsitories
 
 type DeviceRepository interface {
-	Create(string, string)
-	FindByName(string)
-	FindByUUID(string)
+	Create(device_name string, device_uuid string)
+	FindByName(name string)
+	FindByUUID(uuid string)
 	FindAll()
-	DeleteByName(string)
-	DeleteByUUID(string)
+	DeleteByName(device_name string)
+	DeleteByUUID(device_uuid string)
 }
