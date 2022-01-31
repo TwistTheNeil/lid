@@ -26,32 +26,26 @@ func send(event *zerolog.Event, msg string, str []string) {
 }
 
 func (li LoggerInstance) Info(msg string, str ...string) {
-	l := li.Logger.
-		Info()
+	l := li.Logger.Info()
 	send(l, msg, str)
 }
 
 func (li LoggerInstance) Trace(msg string, str ...string) {
-	l := li.Logger.
-		Trace()
+	l := li.Logger.Trace()
 	send(l, msg, str)
 }
 
 func (li LoggerInstance) Debug(msg string, str ...string) {
-	l := li.Logger.
-		Debug()
+	l := li.Logger.Debug()
 	send(l, msg, str)
 }
 
 func (li LoggerInstance) Warn(msg string, str ...string) {
-	l := li.Logger.
-		Warn()
+	l := li.Logger.Warn()
 	send(l, msg, str)
 }
 
 func (li LoggerInstance) Error(msg string, err error, str ...string) {
-	l := li.Logger.
-		Error().
-		Err(err)
+	l := li.Logger.Error().Err(err)
 	send(l, msg, str)
 }
