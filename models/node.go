@@ -8,10 +8,20 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
+type NodeRepository interface {
+	Create(string, string, int64)
+	FindByName(string)
+	FindByMD5(string)
+	FindAll()
+	DeleteByName(string)
+	DeleteByMD5(string)
+}
+
 type Node struct {
-	Name string
-	Size int64
-	MD5  string
+	Name    string `gorm:"primaryKey"`
+	Size    int64
+	MD5     string    `gorm:"primaryKey"`
+	Devices []*Device `gorm:"many2many:node_devices;"`
 }
 
 func (n *Node) Hash() {
