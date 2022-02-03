@@ -19,10 +19,20 @@ type DeviceRepositoryService struct {
 	db *gorm.DB
 }
 
-func NewDeviceRepositoryService(db *gorm.DB) DeviceRepositoryService {
-	return DeviceRepositoryService{
+var deviceRepositoryService DeviceRepositoryService
+
+func NewDeviceRepositoryService(db *gorm.DB) {
+	if (deviceRepositoryService != DeviceRepositoryService{}) {
+		return
+	}
+
+	deviceRepositoryService = DeviceRepositoryService{
 		db: db,
 	}
+}
+
+func GetDeviceRepositoryService() DeviceRepositoryService {
+	return deviceRepositoryService
 }
 
 func (drs DeviceRepositoryService) Create(device_name string, device_uuid string) error {
