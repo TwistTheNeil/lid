@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"lid/repositories"
+	sqlite3db "lid/services/db"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -9,6 +11,7 @@ import (
 )
 
 var debugLevel int16
+var database string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -31,6 +34,10 @@ var rootCmd = &cobra.Command{
 		default:
 			zerolog.SetGlobalLevel(zerolog.InfoLevel)
 		}
+
+		sqlite3db.Open(database)
+		db := sqlite3db.Get()
+		repositories.NewDeviceRepositoryService(db.DB)
 	},
 }
 
@@ -45,4 +52,6 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().Int16VarP(&debugLevel, "debuglevel", "d", 1, "debug level")
+	rootCmd.PersistentFlags().StringVar(&database, "db", "", "database (sqlite) file")
+	rootCmd.MarkPersistentFlagRequired("db")
 }
