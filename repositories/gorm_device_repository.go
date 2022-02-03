@@ -12,17 +12,13 @@ type GORMDeviceRepositoryService struct {
 
 var deviceRepositoryService GORMDeviceRepositoryService
 
-func NewGORMDeviceRepositoryService(db *gorm.DB) {
-	if (deviceRepositoryService != GORMDeviceRepositoryService{}) {
-		return
+func NewGORMDeviceRepositoryService(db *gorm.DB) GORMDeviceRepositoryService {
+	if (deviceRepositoryService == GORMDeviceRepositoryService{}) {
+		deviceRepositoryService = GORMDeviceRepositoryService{
+			db: db,
+		}
 	}
 
-	deviceRepositoryService = GORMDeviceRepositoryService{
-		db: db,
-	}
-}
-
-func GetDeviceRepositoryService() GORMDeviceRepositoryService {
 	return deviceRepositoryService
 }
 
