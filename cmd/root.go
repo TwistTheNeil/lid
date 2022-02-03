@@ -39,7 +39,7 @@ var rootCmd = &cobra.Command{
 
 		sqlite3db.Open(database)
 		db := sqlite3db.Get()
-		repositories.NewDeviceRepositoryService(db.DB)
+		repositories.NewGORMDeviceRepositoryService(db.DB)
 		drs = repositories.GetDeviceRepositoryService()
 	},
 }
