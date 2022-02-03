@@ -5,7 +5,6 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"lid/repositories"
 	"lid/services/logger"
 	"os"
 
@@ -34,7 +33,6 @@ var deviceAddCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		drs := repositories.GetDeviceRepositoryService()
 		err = drs.Create(name, uuid)
 		if err != nil {
 			log.Error("something went wrong saving device details", err)

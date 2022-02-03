@@ -7,7 +7,6 @@ package cmd
 import (
 	"fmt"
 	"lid/models"
-	"lid/repositories"
 	"lid/services/logger"
 	"os"
 
@@ -48,8 +47,6 @@ var deviceFindCmd = &cobra.Command{
 			log.Error(needArgError, fmt.Errorf(needArgError))
 			os.Exit(1)
 		}
-
-		drs := repositories.GetDeviceRepositoryService()
 
 		if name != "" {
 			query = name

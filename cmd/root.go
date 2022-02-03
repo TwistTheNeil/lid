@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"lid/interfaces"
 	"lid/repositories"
 	sqlite3db "lid/services/db"
 	"os"
@@ -12,6 +13,7 @@ import (
 
 var debugLevel int16
 var database string
+var drs interfaces.DeviceRepository
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -38,6 +40,7 @@ var rootCmd = &cobra.Command{
 		sqlite3db.Open(database)
 		db := sqlite3db.Get()
 		repositories.NewDeviceRepositoryService(db.DB)
+		drs = repositories.GetDeviceRepositoryService()
 	},
 }
 
