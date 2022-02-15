@@ -3,11 +3,32 @@ package cmd
 import (
 	"lid/models"
 	"lid/services/disk_inventory"
+	"lid/services/file_ops"
 	"lid/services/logger"
 	"os"
 
 	"github.com/spf13/cobra"
 )
+
+func analyzeNode(log *logger.LoggerInstance, in <-chan string, out chan<- models.Node) {
+	for filename := range in {
+		fileStat, err := os.Stat(filename)
+		if err != nil {
+			log.Error("Can't read file", err, "file", filename)
+			return
+		}
+
+		f, err := os.Open(filename)
+		if err != nil {
+			log.Error("something went wrong opening file", err, "file", filename)
+			return
+		}
+
+		md5Hash := file_ops.MD5Hash(f)
+		out <- models.Node{Name: filename, Size: fileStat.Size(), MD5: md5Hash}
+		f.Close()
+	}
+}
 
 // analyzeCmd represents the analyze command
 var analyzeCmd = &cobra.Command{
@@ -24,19 +45,40 @@ var analyzeCmd = &cobra.Command{
 			log.Error("Can't read --tabulate value", err)
 		}
 
-		files := disk_inventory.BuildFileList(args...)
+		numRoutines, err := cmd.Flags().GetInt("routines")
+		if err != nil {
+			log.Error("Can't get numRoutines. Defaulting to 1", err)
+			numRoutines = 1
+		}
 
-		for _, filename := range files {
-			fileStat, err := os.Stat(filename)
-			if err != nil {
-				log.Error("Can't read file", err, "file", filename)
-				continue
+		files := disk_inventory.BuildFileList(args...)
+		supplier := make(chan string)
+		receiver := make(chan models.Node)
+		received := 0
+		done := make(chan struct{})
+
+		for i := 0; i < numRoutines; i++ {
+			go analyzeNode(&log, supplier, receiver)
+		}
+
+		go func() {
+			for n := range receiver {
+				nl.Append(n)
+				received++
+
+				if received == len(files) {
+					done <- struct{}{}
+					break
+				}
 			}
 
-			newNode := models.Node{Name: filename, Size: fileStat.Size()}
-			newNode.Hash()
-			nl.Append(newNode)
+		}()
+
+		for _, filename := range files {
+			supplier <- filename
 		}
+
+		<-done
 
 		if tabulate {
 			nl.Pretty()
@@ -46,5 +88,6 @@ var analyzeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(analyzeCmd)
-	rootCmd.PersistentFlags().BoolP("tabulate", "t", false, "Tabulate analysis")
+	analyzeCmd.PersistentFlags().BoolP("tabulate", "t", false, "Tabulate analysis")
+	analyzeCmd.Flags().IntP("routines", "r", 1, "number of go routines to use while hashing")
 }

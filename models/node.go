@@ -1,8 +1,6 @@
 package models
 
 import (
-	"lid/services/file_ops"
-	"lid/services/logger"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -13,19 +11,6 @@ type Node struct {
 	Size    int64
 	MD5     string    `gorm:"primaryKey"`
 	Devices []*Device `gorm:"many2many:node_devices;"`
-}
-
-func (n *Node) Hash() {
-	log := logger.CreateLogger("node.Hash")
-	log.Trace("node.Hash called")
-
-	f, err := os.Open(n.Name)
-	if err != nil {
-		log.Error("something went wrong opening file", err, "file", n.Name)
-	}
-	defer f.Close()
-
-	n.MD5 = file_ops.MD5Hash(f)
 }
 
 type NodeList struct {
