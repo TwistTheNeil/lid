@@ -6,22 +6,27 @@ import (
 	"lid/services/file_ops"
 	"lid/services/logger"
 	"os"
+	"sync"
 
 	"github.com/spf13/cobra"
 )
 
-func analyzeNode(log *logger.LoggerInstance, in <-chan string, out chan<- models.Node) {
+func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan string, out chan<- models.Node, errored chan<- struct{}) {
+	defer wg.Done()
+
 	for filename := range in {
 		fileStat, err := os.Stat(filename)
 		if err != nil {
 			log.Error("Can't read file", err, "file", filename)
-			return
+			errored <- struct{}{}
+			continue
 		}
 
 		f, err := os.Open(filename)
 		if err != nil {
 			log.Error("something went wrong opening file", err, "file", filename)
-			return
+			errored <- struct{}{}
+			continue
 		}
 
 		md5Hash := file_ops.MD5Hash(f)
@@ -52,26 +57,30 @@ var analyzeCmd = &cobra.Command{
 		}
 
 		files := disk_inventory.BuildFileList(args...)
-		supplier := make(chan string)
-		receiver := make(chan models.Node)
+		var wg sync.WaitGroup
+		supplier, receiver, errored, done := make(chan string), make(chan models.Node), make(chan struct{}), make(chan struct{})
 		received := 0
-		done := make(chan struct{})
 
 		for i := 0; i < numRoutines; i++ {
-			go analyzeNode(&log, supplier, receiver)
+			wg.Add(1)
+			go analyzeNode(&log, &wg, supplier, receiver, errored)
 		}
 
 		go func() {
-			for n := range receiver {
-				nl.Append(n)
-				received++
+			for {
+				select {
+				case n := <-receiver:
+					nl.Append(n)
+					received++
+				case <-errored:
+					received++
+				}
 
 				if received == len(files) {
 					done <- struct{}{}
 					break
 				}
 			}
-
 		}()
 
 		for _, filename := range files {
@@ -79,6 +88,9 @@ var analyzeCmd = &cobra.Command{
 		}
 
 		<-done
+		close(supplier)
+		close(receiver)
+		wg.Wait()
 
 		if tabulate {
 			nl.Pretty()
