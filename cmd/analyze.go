@@ -67,6 +67,7 @@ var analyzeCmd = &cobra.Command{
 		}
 
 		go func() {
+		OUT:
 			for {
 				select {
 				case n := <-receiver:
@@ -78,7 +79,7 @@ var analyzeCmd = &cobra.Command{
 
 				if received == len(files) {
 					done <- struct{}{}
-					break
+					break OUT
 				}
 			}
 		}()
