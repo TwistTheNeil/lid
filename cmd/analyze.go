@@ -15,16 +15,16 @@ func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan strin
 	defer wg.Done()
 
 	for filename := range in {
-		fileStat, err := os.Stat(filename)
+		f, err := os.Open(filename)
 		if err != nil {
-			log.Error("Can't read file", err, "file", filename)
+			log.Error("something went wrong opening file", err, "file", filename)
 			errored <- struct{}{}
 			continue
 		}
 
-		f, err := os.Open(filename)
+		fileStat, err := f.Stat()
 		if err != nil {
-			log.Error("something went wrong opening file", err, "file", filename)
+			log.Error("Can't read file", err, "file", filename)
 			errored <- struct{}{}
 			continue
 		}
