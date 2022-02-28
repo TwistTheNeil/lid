@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var debugLevel int16
+var debugLevel int8
 var database string
 var drs interfaces.DeviceRepository
 
@@ -23,16 +23,8 @@ var rootCmd = &cobra.Command{
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 		switch debugLevel {
-		case -1:
-			zerolog.SetGlobalLevel(zerolog.TraceLevel)
-		case 0:
-			zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		case 1:
-			zerolog.SetGlobalLevel(zerolog.InfoLevel)
-		case 2:
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-		case 3:
-			zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+		case -1, 0, 1, 2, 3, 4, 5, 6, 7:
+			zerolog.SetGlobalLevel(zerolog.Level(debugLevel))
 		default:
 			zerolog.SetGlobalLevel(zerolog.InfoLevel)
 		}
@@ -53,7 +45,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().Int16VarP(&debugLevel, "debuglevel", "d", 1, "debug level")
+	rootCmd.PersistentFlags().Int8VarP(&debugLevel, "debuglevel", "d", 1, "debug level")
 	rootCmd.PersistentFlags().StringVar(&database, "db", "", "database (sqlite) file")
 	rootCmd.MarkPersistentFlagRequired("db")
 }
