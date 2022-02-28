@@ -33,7 +33,13 @@ var deviceAddCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		err = drs.Create(name, uuid)
+		size, err := cmd.Flags().GetInt64("size")
+		if err != nil {
+			log.Error("something went wrong specifying device --size", err)
+			os.Exit(1)
+		}
+
+		err = drs.Create(name, uuid, size)
 		if err != nil {
 			log.Error("something went wrong saving device details", err)
 		}
@@ -44,6 +50,8 @@ func init() {
 	deviceCmd.AddCommand(deviceAddCmd)
 	deviceAddCmd.Flags().String("name", "", "device name")
 	deviceAddCmd.Flags().String("uuid", "", "device uuid")
+	deviceAddCmd.Flags().Int64("size", 0, "device uuid")
 	deviceAddCmd.MarkFlagRequired("name")
 	deviceAddCmd.MarkFlagRequired("uuid")
+	deviceAddCmd.MarkFlagRequired("size")
 }
