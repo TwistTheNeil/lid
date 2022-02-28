@@ -91,6 +91,8 @@ var analyzeCmd = &cobra.Command{
 		<-done
 		close(supplier)
 		close(receiver)
+		close(errored)
+		close(done)
 		wg.Wait()
 
 		if tabulate {
