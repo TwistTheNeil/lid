@@ -2,15 +2,17 @@ package models
 
 import (
 	"os"
+	"time"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 type Node struct {
-	Name    string `gorm:"primaryKey"`
-	Size    int64
-	MD5     string    `gorm:"primaryKey"`
-	Devices []*Device `gorm:"many2many:node_devices;"`
+	Name      string `gorm:"primaryKey"`
+	Size      int64
+	MD5       string `gorm:"primaryKey"`
+	CreatedAt time.Time
+	Devices   []*Device `gorm:"many2many:node_devices;"`
 }
 
 type NodeList struct {
