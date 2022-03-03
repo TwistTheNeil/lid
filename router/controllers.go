@@ -3,7 +3,7 @@ package router
 import (
 	"lid/interfaces"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 )
 
 type controller struct {
@@ -20,9 +20,7 @@ func newController(drs interfaces.DeviceRepository) controller {
 	return c
 }
 
-func (c controller) FindAllDevices(ctx *gin.Context) {
+func (c controller) FindAllDevices(ctx echo.Context) error {
 	result, _ := c.drs.FindAll()
-	ctx.JSON(200, gin.H{
-		"result": result,
-	})
+	return ctx.JSON(200, result)
 }
