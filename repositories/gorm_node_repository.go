@@ -23,7 +23,51 @@ func NewGORMNodeRepositoryService(db *gorm.DB) GORMNodeRepositoryService {
 }
 
 func (nrs GORMNodeRepositoryService) Create(name string, hash string, size int64) error {
-	d := models.Node{Name: name, MD5: hash, Size: size}
-	err := nrs.db.Create(&d).Error
+	n := models.Node{Name: name, MD5: hash, Size: size}
+	err := nrs.db.Create(&n).Error
+	return err
+}
+
+func (nrs GORMNodeRepositoryService) FindByName(name string) (models.Node, error) {
+	n := models.Node{Name: name}
+	err := nrs.db.First(&n).Error
+	return n, err
+}
+
+func (nrs GORMNodeRepositoryService) FindByUUID(hash string) (models.Node, error) {
+	n := models.Node{MD5: hash}
+	err := nrs.db.First(&n).Error
+	return n, err
+}
+
+func (nrs GORMNodeRepositoryService) FindAll() ([]models.Node, error) {
+	var n []models.Node
+	err := nrs.db.Find(&n).Error
+	return n, err
+}
+
+func (nrs GORMNodeRepositoryService) FindAllPreload() ([]models.Node, error) {
+	var n []models.Node
+	err := nrs.db.Preload("Nodes").Find(&n).Error
+	return n, err
+}
+
+func (nrs GORMNodeRepositoryService) DeleteByName(name string) error {
+	n := models.Node{Name: name}
+	err := nrs.db.First(&n).Error
+	if err != nil {
+		return err
+	}
+	err = nrs.db.Delete(&n).Error
+	return err
+}
+
+func (nrs GORMNodeRepositoryService) DeleteByUUID(hash string) error {
+	n := models.Node{MD5: hash}
+	err := nrs.db.First(&n).Error
+	if err != nil {
+		return err
+	}
+	err = nrs.db.Delete(&n).Error
 	return err
 }
