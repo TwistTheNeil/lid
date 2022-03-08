@@ -58,7 +58,7 @@ func (drs GORMDeviceRepositoryService) DeleteByName(device_name string) error {
 	if err != nil {
 		return err
 	}
-	err = drs.db.First(&d).Error
+	err = drs.db.Delete(&d).Error
 	return err
 }
 
@@ -68,6 +68,6 @@ func (drs GORMDeviceRepositoryService) DeleteByUUID(device_uuid string) error {
 	if err != nil {
 		return err
 	}
-	err = drs.db.First(&d).Error
+	err = drs.db.Delete(&d).Error
 	return err
 }
