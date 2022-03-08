@@ -8,17 +8,18 @@ import (
 )
 
 // TODO: make config model
-func Start(drs interfaces.DeviceRepository) {
+func Start(drs interfaces.DeviceRepository, nrs interfaces.NodeRepository) {
 	router := echo.New()
 
 	router.Use(middleware.CORS())
 	router.Use(middleware.Logger())
-	controller := newController(drs)
+	controller := newController(drs, nrs)
 
 	router.StaticFS("/", getFrontendAssets())
 	v1API := router.Group("/api/v1")
 	{
-		v1API.GET("/devices", controller.FindAllDevices)
+		v1API.GET("/devices", controller.GetAllDevices)
+		v1API.GET("/files", controller.GetAllFiles)
 		// v1deviceAPI := v1API.Group("/device")
 		// {
 		// 	v1deviceAPI.GET("/name/:name")
