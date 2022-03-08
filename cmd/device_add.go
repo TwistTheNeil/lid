@@ -50,8 +50,7 @@ func init() {
 	deviceCmd.AddCommand(deviceAddCmd)
 	deviceAddCmd.Flags().String("name", "", "device name")
 	deviceAddCmd.Flags().String("uuid", "", "device uuid")
-	deviceAddCmd.Flags().Int64("size", 0, "device uuid")
+	deviceAddCmd.Flags().Int64("size", 0, "device size")
 	deviceAddCmd.MarkFlagRequired("name")
 	deviceAddCmd.MarkFlagRequired("uuid")
-	deviceAddCmd.MarkFlagRequired("size")
 }

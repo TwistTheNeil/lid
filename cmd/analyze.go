@@ -11,6 +11,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var save bool
+var refStorageDeviceName string
+
 func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan string, out chan<- models.Node, errored chan<- struct{}) {
 	defer wg.Done()
 
@@ -44,6 +47,11 @@ var analyzeCmd = &cobra.Command{
 		var nl models.NodeList
 
 		log.Trace("analyze file called")
+
+		refStorageDevice, err := drs.FindByName(refStorageDeviceName)
+		if err != nil {
+			panic(err)
+		}
 
 		tabulate, err := cmd.Flags().GetBool("tabulate")
 		if err != nil {
@@ -95,6 +103,12 @@ var analyzeCmd = &cobra.Command{
 		close(done)
 		wg.Wait()
 
+		if save {
+			for _, n := range nl.Nodes {
+				nrs.Create(n.Name, n.MD5, n.Size, refStorageDevice)
+			}
+		}
+
 		if tabulate {
 			nl.Pretty()
 		}
@@ -105,4 +119,7 @@ func init() {
 	rootCmd.AddCommand(analyzeCmd)
 	analyzeCmd.PersistentFlags().BoolP("tabulate", "t", false, "Tabulate analysis")
 	analyzeCmd.Flags().IntP("routines", "r", 1, "number of go routines to use while hashing")
+	analyzeCmd.Flags().BoolVar(&save, "save", false, "save analyzed files to db")
+	// TODO: figure out what to do about the storage name. it is necessary with --save
+	analyzeCmd.Flags().StringVar(&refStorageDeviceName, "device", "", "associate analyzed files to this device")
 }

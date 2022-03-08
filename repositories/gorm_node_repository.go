@@ -22,9 +22,10 @@ func NewGORMNodeRepositoryService(db *gorm.DB) GORMNodeRepositoryService {
 	return nodeRepositoryService
 }
 
-func (nrs GORMNodeRepositoryService) Create(name string, hash string, size int64) error {
+func (nrs GORMNodeRepositoryService) Create(name string, hash string, size int64, storageDevice models.Device) error {
 	n := models.Node{Name: name, MD5: hash, Size: size}
 	err := nrs.db.Create(&n).Error
+	err = nrs.db.Model(&n).Association("Devices").Append(&storageDevice)
 	return err
 }
 

@@ -14,6 +14,7 @@ import (
 var debugLevel int8
 var database string
 var drs interfaces.DeviceRepository
+var nrs interfaces.NodeRepository
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -32,6 +33,7 @@ var rootCmd = &cobra.Command{
 		sqlite3db.Open(database)
 		db := sqlite3db.Get()
 		drs = repositories.NewGORMDeviceRepositoryService(db.DB)
+		nrs = repositories.NewGORMNodeRepositoryService(db.DB)
 	},
 }
 
