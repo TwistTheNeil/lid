@@ -6,6 +6,7 @@ import (
 	"lid/services/file_ops"
 	"lid/services/logger"
 	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/spf13/cobra"
@@ -33,7 +34,7 @@ func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan strin
 		}
 
 		md5Hash := file_ops.MD5Hash(f)
-		out <- models.Node{Name: filename, Size: fileStat.Size(), MD5: md5Hash}
+		out <- models.Node{Name: filepath.Base(filename), Size: fileStat.Size(), MD5: md5Hash}
 		f.Close()
 	}
 }
