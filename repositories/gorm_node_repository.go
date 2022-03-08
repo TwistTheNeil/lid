@@ -34,7 +34,7 @@ func (nrs GORMNodeRepositoryService) FindByName(name string) (models.Node, error
 	return n, err
 }
 
-func (nrs GORMNodeRepositoryService) FindByUUID(hash string) (models.Node, error) {
+func (nrs GORMNodeRepositoryService) FindByMD5(hash string) (models.Node, error) {
 	n := models.Node{MD5: hash}
 	err := nrs.db.First(&n).Error
 	return n, err
@@ -62,7 +62,7 @@ func (nrs GORMNodeRepositoryService) DeleteByName(name string) error {
 	return err
 }
 
-func (nrs GORMNodeRepositoryService) DeleteByUUID(hash string) error {
+func (nrs GORMNodeRepositoryService) DeleteByMD5(hash string) error {
 	n := models.Node{MD5: hash}
 	err := nrs.db.First(&n).Error
 	if err != nil {

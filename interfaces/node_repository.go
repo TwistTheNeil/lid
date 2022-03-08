@@ -7,6 +7,7 @@ type NodeRepository interface {
 	FindByName(name string) (models.Node, error)
 	FindByMD5(hash string) (models.Node, error)
 	FindAll() ([]models.Node, error)
+	FindAllPreload() ([]models.Node, error)
 	DeleteByName(name string) error
 	DeleteByMD5(hash string) error
 }
