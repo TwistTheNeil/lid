@@ -46,6 +46,12 @@ func (drs GORMDeviceRepositoryService) FindAll() ([]models.Device, error) {
 	return d, err
 }
 
+func (drs GORMDeviceRepositoryService) FindAllPreload() ([]models.Device, error) {
+	var d []models.Device
+	err := drs.db.Preload("Nodes").Find(&d).Error
+	return d, err
+}
+
 func (drs GORMDeviceRepositoryService) DeleteByName(device_name string) error {
 	d := models.Device{Name: device_name}
 	err := drs.db.First(&d).Error

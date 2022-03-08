@@ -4,12 +4,15 @@ import (
 	"lid/interfaces"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // TODO: make config model
 func Start(drs interfaces.DeviceRepository) {
 	router := echo.New()
 
+	router.Use(middleware.CORS())
+	router.Use(middleware.Logger())
 	controller := newController(drs)
 
 	router.StaticFS("/", getFrontendAssets())
