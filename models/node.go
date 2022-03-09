@@ -8,11 +8,11 @@ import (
 )
 
 type Node struct {
-	Name      string `gorm:"primaryKey"`
-	Size      int64
-	MD5       string `gorm:"primaryKey"`
-	CreatedAt time.Time
-	Devices   []*Device `gorm:"many2many:node_devices;"`
+	Name      string    `gorm:"primaryKey" json:"name"`
+	Size      int64     `json:"size"`
+	MD5       string    `gorm:"primaryKey" json:"hash"`
+	CreatedAt time.Time `json:"-"`
+	Devices   []*Device `gorm:"many2many:node_devices;" json:"-"`
 }
 
 type NodeList struct {

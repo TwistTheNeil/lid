@@ -1,22 +1,25 @@
 <template>
   <div class="home">
     <SearchbarInput />
-    {{ storageDevices }}
-    {{ files }}
+    <FileList :headers="headers" :items="files" />
   </div>
 </template>
 
 <script>
 import SearchbarInput from "@/components/SearchbarInput.vue";
+import FileList from "@/components/FileList.vue";
+
 export default {
   name: "Home",
   components: {
     SearchbarInput,
+    FileList,
   },
   data() {
     return {
       storageDevices: null,
       files: null,
+      headers: ["hash", "name"],
     };
   },
   methods: {
