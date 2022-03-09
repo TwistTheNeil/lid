@@ -1,13 +1,18 @@
 <template>
   <div class="home">
+    <SearchbarInput />
     {{ storageDevices }}
     {{ files }}
   </div>
 </template>
 
 <script>
+import SearchbarInput from "@/components/SearchbarInput.vue";
 export default {
   name: "Home",
+  components: {
+    SearchbarInput,
+  },
   data() {
     return {
       storageDevices: null,
