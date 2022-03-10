@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="file in files" :key="file.hash">
+      <tr v-for="file in filteredFiles" :key="file.hash">
         <td>{{ file.hash }}</td>
         <td>{{ file.name }}</td>
       </tr>
@@ -19,6 +19,8 @@
 <script>
 import { storeToRefs } from "pinia";
 import { useFileStore } from "../store/fileStore";
+import { useSearchStore } from "../store/searchStore";
+import { computed } from "vue";
 
 export default {
   name: "FileList",
@@ -27,9 +29,19 @@ export default {
   },
   setup() {
     const fileStore = useFileStore();
+    const searchStore = useSearchStore();
     const { files } = storeToRefs(fileStore);
+
+    const filteredFiles = computed(() => {
+      if (!files || files.value.length === 0) {
+        return [];
+      }
+
+      return files.value.filter((f) => f.name.match(searchStore.search));
+    });
+
     return {
-      files,
+      filteredFiles,
     };
   },
 };
