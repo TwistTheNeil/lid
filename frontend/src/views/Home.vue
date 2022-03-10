@@ -6,11 +6,12 @@
 </template>
 
 <script>
+import { onMounted } from "vue";
 import SearchbarInput from "@/components/SearchbarInput.vue";
 import FileList from "@/components/FileList.vue";
+
 import { useFileStore } from "../store/fileStore";
 import { useStorageDeviceStore } from "../store/storageDeviceStore";
-import { onMounted } from "vue";
 
 export default {
   name: "Home",

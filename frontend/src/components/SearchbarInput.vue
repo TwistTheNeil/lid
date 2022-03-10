@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import { useSearchStore } from "../store/searchStore";
 import { ref, watch } from "vue";
+
+import { useSearchStore } from "../store/searchStore";
 
 export default {
   setup() {

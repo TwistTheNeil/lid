@@ -18,9 +18,10 @@
 
 <script>
 import { storeToRefs } from "pinia";
+import { computed } from "vue";
+
 import { useFileStore } from "../store/fileStore";
 import { useSearchStore } from "../store/searchStore";
-import { computed } from "vue";
 
 export default {
   name: "FileList",
