@@ -8,20 +8,29 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in items" :key="item.uuid || item.hash">
-        <td>{{ item.hash }}</td>
-        <td>{{ item.name }}</td>
+      <tr v-for="file in files" :key="file.hash">
+        <td>{{ file.hash }}</td>
+        <td>{{ file.name }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import { storeToRefs } from "pinia";
+import { useFileStore } from "../store/fileStore";
+
 export default {
   name: "FileList",
   props: {
     headers: Array,
-    items: Array,
+  },
+  setup() {
+    const fileStore = useFileStore();
+    const { files } = storeToRefs(fileStore);
+    return {
+      files,
+    };
   },
 };
 </script>

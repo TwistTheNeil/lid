@@ -1,14 +1,16 @@
 <template>
   <div class="home">
     <SearchbarInput />
-    <FileList :headers="headers" :items="files" />
+    <FileList :headers="headers" />
   </div>
 </template>
 
 <script>
 import SearchbarInput from "@/components/SearchbarInput.vue";
 import FileList from "@/components/FileList.vue";
-import { ref, onMounted } from "vue";
+import { useFileStore } from "../store/fileStore";
+import { useStorageDeviceStore } from "../store/storageDeviceStore";
+import { onMounted } from "vue";
 
 export default {
   name: "Home",
@@ -17,19 +19,21 @@ export default {
     FileList,
   },
   setup() {
-    const storageDevices = ref([]);
-    const files = ref([]);
     const headers = ["hash", "name"];
+    const fileStore = useFileStore();
+    const storageDevicesStore = useStorageDeviceStore();
 
     const getStorageDevices = async () => {
       const response = await fetch(`/api/v1/devices`);
       const responsejson = await response.json();
-      storageDevices.value = responsejson;
+      storageDevicesStore.$reset;
+      storageDevicesStore.devices = responsejson;
     };
     const getFiles = async () => {
       const response = await fetch(`/api/v1/files`);
       const responsejson = await response.json();
-      files.value = responsejson;
+      fileStore.$reset;
+      fileStore.files = responsejson;
     };
 
     onMounted(async () => {
@@ -38,12 +42,7 @@ export default {
     });
 
     return {
-      storageDevices,
-      files,
       headers,
-
-      getStorageDevices,
-      getFiles,
     };
   },
 };
