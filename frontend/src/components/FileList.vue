@@ -19,6 +19,7 @@
 <script>
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
+import { Fzf } from "fzf";
 
 import { useFileStore } from "../store/fileStore";
 import { useSearchStore } from "../store/searchStore";
@@ -38,9 +39,14 @@ export default {
         return [];
       }
 
-      return files.value.filter((f) =>
-        f.name.toLowerCase().match(searchStore.search.toLowerCase())
-      );
+      if (searchStore.search === "") {
+        return files.value;
+      }
+
+      const fzf = new Fzf(files.value, {
+        selector: (i) => i.name,
+      });
+      return fzf.find(searchStore.search).map((i) => i.item);
     });
 
     return {
