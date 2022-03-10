@@ -12,11 +12,22 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { useSearchStore } from "../store/searchStore";
+import { ref, watch } from "vue";
 
 export default {
   setup() {
-    const search = ref("");
+    let search = ref("");
+    const searchStore = useSearchStore();
+
+    watch(
+      () => search.value,
+      // eslint-disable-next-line no-unused-vars
+      (search, oldSearch) => {
+        searchStore.search = search;
+      }
+    );
+
     return {
       search,
     };
