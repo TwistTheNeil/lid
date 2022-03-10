@@ -12,10 +12,13 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
-  data() {
+  setup() {
+    const search = ref("");
     return {
-      search: "",
+      search,
     };
   },
 };

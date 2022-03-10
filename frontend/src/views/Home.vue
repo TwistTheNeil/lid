@@ -8,6 +8,7 @@
 <script>
 import SearchbarInput from "@/components/SearchbarInput.vue";
 import FileList from "@/components/FileList.vue";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "Home",
@@ -15,28 +16,35 @@ export default {
     SearchbarInput,
     FileList,
   },
-  data() {
-    return {
-      storageDevices: null,
-      files: null,
-      headers: ["hash", "name"],
-    };
-  },
-  methods: {
-    async getStorageDevices() {
+  setup() {
+    const storageDevices = ref([]);
+    const files = ref([]);
+    const headers = ["hash", "name"];
+
+    const getStorageDevices = async () => {
       const response = await fetch(`/api/v1/devices`);
       const responsejson = await response.json();
-      this.storageDevices = responsejson;
-    },
-    async getFiles() {
+      storageDevices.value = responsejson;
+    };
+    const getFiles = async () => {
       const response = await fetch(`/api/v1/files`);
       const responsejson = await response.json();
-      this.files = responsejson;
-    },
-  },
-  async created() {
-    await this.getStorageDevices();
-    await this.getFiles();
+      files.value = responsejson;
+    };
+
+    onMounted(async () => {
+      await getStorageDevices();
+      await getFiles();
+    });
+
+    return {
+      storageDevices,
+      files,
+      headers,
+
+      getStorageDevices,
+      getFiles,
+    };
   },
 };
 </script>
