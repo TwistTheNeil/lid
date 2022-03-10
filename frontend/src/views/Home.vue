@@ -23,22 +23,9 @@ export default {
     const fileStore = useFileStore();
     const storageDevicesStore = useStorageDeviceStore();
 
-    const getStorageDevices = async () => {
-      const response = await fetch(`/api/v1/devices`);
-      const responsejson = await response.json();
-      storageDevicesStore.$reset;
-      storageDevicesStore.devices = responsejson;
-    };
-    const getFiles = async () => {
-      const response = await fetch(`/api/v1/files`);
-      const responsejson = await response.json();
-      fileStore.$reset;
-      fileStore.files = responsejson;
-    };
-
     onMounted(async () => {
-      await getStorageDevices();
-      await getFiles();
+      await storageDevicesStore.refresh();
+      await fileStore.refresh();
     });
 
     return {
