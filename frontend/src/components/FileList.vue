@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-striped table-hover table-sm">
+  <table class="table table-striped table-hover table-sm table-bordered mt-5">
     <thead>
       <tr>
         <th v-for="header in headers" scope="col" :key="header">
@@ -19,6 +19,7 @@
 <script>
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
+import Fuse from "fuse.js";
 
 import { useFileStore } from "../store/fileStore";
 import { useSearchStore } from "../store/searchStore";
@@ -38,9 +39,18 @@ export default {
         return [];
       }
 
-      return files.value.filter((f) =>
-        f.name.toLowerCase().match(searchStore.search.toLowerCase())
-      );
+      if (searchStore.search === "") {
+        return files.value;
+      }
+
+      const fuseOpts = {
+        includeScore: true,
+        ignoreLocation: true,
+        keys: ["name", "hash"],
+      };
+      const fuse = new Fuse(files.value, fuseOpts);
+
+      return fuse.search(searchStore.search).map(i => i.item);
     });
 
     return {
