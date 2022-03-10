@@ -37,7 +37,9 @@ export default {
         return [];
       }
 
-      return files.value.filter((f) => f.name.match(searchStore.search));
+      return files.value.filter((f) =>
+        f.name.toLowerCase().match(searchStore.search.toLowerCase())
+      );
     });
 
     return {
