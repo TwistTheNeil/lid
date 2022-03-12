@@ -60,7 +60,11 @@ export default {
       const fzf = new Fzf(f, {
         selector: (i) => i.name,
       });
-      return fzf.find(searchStore.search).map((i) => i.item);
+
+      // We remove whitespace since fzf won't find a whitespace in certain
+      // filenames. As a result, weights won't be accurately calculated
+      // and expected results will not be seen
+      return fzf.find(searchStore.search.replace(/\s/g, "")).map((i) => i.item);
     });
 
     return {
