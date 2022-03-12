@@ -49,7 +49,7 @@ func (nrs GORMNodeRepositoryService) FindAll() ([]models.Node, error) {
 
 func (nrs GORMNodeRepositoryService) FindAllPreload() ([]models.Node, error) {
 	var n []models.Node
-	err := nrs.db.Preload("Nodes").Find(&n).Error
+	err := nrs.db.Preload("Devices").Find(&n).Error
 	return n, err
 }
 

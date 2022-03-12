@@ -4,6 +4,7 @@ import (
 	"lid/models"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type GORMDeviceRepositoryService struct {
@@ -48,7 +49,7 @@ func (drs GORMDeviceRepositoryService) FindAll() ([]models.Device, error) {
 
 func (drs GORMDeviceRepositoryService) FindAllPreload() ([]models.Device, error) {
 	var d []models.Device
-	err := drs.db.Preload("Nodes").Find(&d).Error
+	err := drs.db.Preload(clause.Associations).Find(&d).Error
 	return d, err
 }
 

@@ -12,7 +12,7 @@ type Node struct {
 	Size      int64     `json:"size"`
 	MD5       string    `gorm:"primaryKey" json:"hash"`
 	CreatedAt time.Time `json:"-"`
-	Devices   []*Device `gorm:"many2many:node_devices;" json:"-"`
+	Devices   []*Device `gorm:"many2many:node_devices;" json:"devices"`
 }
 
 type NodeList struct {
