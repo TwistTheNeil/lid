@@ -11,7 +11,7 @@
     <tbody>
       <tr v-for="file in filteredFiles" :key="file.hash">
         <td class="monospace">{{ file.hash }}</td>
-        <td class="monospace">{{ file.size }}</td>
+        <td class="monospace" align="right">{{ file.size }}</td>
         <td class="monospace">
           <span
             v-for="device in file.devices"
