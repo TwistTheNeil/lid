@@ -34,7 +34,7 @@ import { Fzf } from "fzf";
 
 import { useFileStore } from "../store/fileStore";
 import { useSearchStore } from "../store/searchStore";
-import { bytesToHumanReadableSize } from "../../services/dataSizeConversion";
+import { bytesToHumanReadableUnits } from "../../services/dataSizeConversion";
 
 export default {
   name: "FileList",
@@ -50,7 +50,7 @@ export default {
 
       const f = files.value.map((f) => ({
         ...f,
-        size: bytesToHumanReadableSize(f.size),
+        size: bytesToHumanReadableUnits(f.size),
       }));
 
       if (searchStore.search === "") {

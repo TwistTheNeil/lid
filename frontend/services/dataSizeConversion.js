@@ -1,4 +1,4 @@
-export const bytesToHumanReadableSize = (bytes) => {
+export const bytesToHumanReadableUnits = (bytes) => {
   const kib = (bytes / 1024).toFixed(2);
   if (kib < 1) {
     return `${bytes} B`;
