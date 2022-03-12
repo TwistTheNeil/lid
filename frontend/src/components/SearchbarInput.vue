@@ -2,7 +2,7 @@
   <div class="form-floating mt-4 mb-4">
     <input
       type="text"
-      class="form-control"
+      class="form-control border-0"
       id="searchbar"
       placeholder="Search..."
       v-model="search"
