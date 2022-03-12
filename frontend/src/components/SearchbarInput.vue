@@ -14,7 +14,7 @@
 <script>
 import { ref, watch } from "vue";
 
-import { useSearchStore } from "../store/searchStore";
+import { useSearchStore } from "@/store/searchStore";
 
 export default {
   setup() {

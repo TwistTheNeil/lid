@@ -32,9 +32,9 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { Fzf } from "fzf";
 
-import { useFileStore } from "../store/fileStore";
-import { useSearchStore } from "../store/searchStore";
-import { bytesToHumanReadableUnits } from "../../services/dataSizeConversion";
+import { useFileStore } from "@/store/fileStore";
+import { useSearchStore } from "@/store/searchStore";
+import { bytesToHumanReadableUnits } from "@/services/dataSizeConversion";
 
 export default {
   name: "FileList",
