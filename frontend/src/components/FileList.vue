@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-responsive table-borderless">
+  <table class="table table-responsive table-borderless table-hover">
     <thead class="bg-light">
       <tr>
         <th scope="col" width="10%">Hash</th>
