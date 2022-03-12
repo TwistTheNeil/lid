@@ -26,9 +26,6 @@ import { useSearchStore } from "../store/searchStore";
 
 export default {
   name: "FileList",
-  props: {
-    headers: Array,
-  },
   setup() {
     const fileStore = useFileStore();
     const searchStore = useSearchStore();
@@ -50,6 +47,7 @@ export default {
     });
 
     return {
+      headers: ["hash", "name"],
       filteredFiles,
     };
   },
