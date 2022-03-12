@@ -1,5 +1,5 @@
 <template>
-  <div class="form-floating">
+  <div class="form-floating mt-4 mb-4">
     <input
       type="text"
       class="form-control"

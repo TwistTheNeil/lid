@@ -1,15 +1,14 @@
 <template>
-  <table class="table table-striped table-hover table-sm">
-    <thead>
+  <table class="table table-responsive table-borderless">
+    <thead class="bg-light">
       <tr>
-        <th v-for="header in headers" scope="col" :key="header">
-          {{ header }}
-        </th>
+        <th scope="col" width="10%">Hash</th>
+        <th scope="col">Name</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="file in filteredFiles" :key="file.hash">
-        <td>{{ file.hash }}</td>
+        <td class="monospace">{{ file.hash }}</td>
         <td>{{ file.name }}</td>
       </tr>
     </tbody>
@@ -47,7 +46,6 @@ export default {
     });
 
     return {
-      headers: ["hash", "name"],
       filteredFiles,
     };
   },
