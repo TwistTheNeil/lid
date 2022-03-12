@@ -34,6 +34,7 @@ import { Fzf } from "fzf";
 
 import { useFileStore } from "../store/fileStore";
 import { useSearchStore } from "../store/searchStore";
+import { bytesToHumanReadableSize } from "../../services/dataSizeConversion";
 
 export default {
   name: "FileList",
@@ -41,25 +42,6 @@ export default {
     const fileStore = useFileStore();
     const searchStore = useSearchStore();
     const { files } = storeToRefs(fileStore);
-
-    const bytesToHumanReadableSize = (bytes) => {
-      const kib = (bytes / 1024).toFixed(2);
-      if (kib < 1) {
-        return `${bytes} B`;
-      }
-
-      const mib = (kib / 1024).toFixed(2);
-      if (mib < 1) {
-        return `${kib} KiB`;
-      }
-
-      const gib = (mib / 1024).toFixed(2);
-      if (gib < 1) {
-        return `${mib} MiB`;
-      }
-
-      return `${gib} GiB`;
-    };
 
     const filteredFiles = computed(() => {
       if (!files || files.value.length === 0) {
@@ -69,7 +51,6 @@ export default {
       const f = files.value.map((f) => ({
         ...f,
         size: bytesToHumanReadableSize(f.size),
-        // devices: f.devices.map((d) => d.name),
       }));
 
       if (searchStore.search === "") {
