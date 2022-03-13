@@ -10,7 +10,7 @@ import SearchbarInput from "@/components/SearchbarInput.vue";
 import DeviceList from "@/components/DeviceList.vue";
 
 export default {
-  name: "Home",
+  name: "Devices",
   components: {
     SearchbarInput,
     DeviceList,

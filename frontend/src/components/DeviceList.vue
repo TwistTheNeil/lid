@@ -11,7 +11,19 @@
       <tr v-for="device in filteredStorageDevices" :key="device.uuid">
         <td class="monospace">{{ device.uuid }}</td>
         <td class="monospace" align="right">
-          {{ device.usedCapacity }} / {{ device.capacity }}
+          <div class="progress" style="height: 20px">
+            <div
+              class="progress-bar"
+              :class="{
+                'bg-danger': device.usagePercentage > 80,
+              }"
+              role="progressbar"
+              :style="{ width: `${device.usagePercentage}%` }"
+              :aria-valuenow="device.usagePercentage"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
         </td>
         <td class="monospace">{{ device.name }}</td>
       </tr>
@@ -29,7 +41,7 @@ import { useSearchStore } from "@/store/searchStore";
 import { bytesToHumanReadableUnits } from "@/services/dataSizeConversion";
 
 export default {
-  name: "FileList",
+  name: "DeviceList",
   setup() {
     const storageDeviceStore = useStorageDeviceStore();
     const searchStore = useSearchStore();
@@ -40,13 +52,20 @@ export default {
         return [];
       }
 
-      const d = storageDevices.value.map((d) => ({
-        ...d,
-        capacity: bytesToHumanReadableUnits(d.size),
-        usedCapacity: bytesToHumanReadableUnits(
-          d.files.reduce((a, c) => a + c.size, 0)
-        ),
-      }));
+      const d = storageDevices.value.map((d) => {
+        const capacity = bytesToHumanReadableUnits(d.size);
+        const usedCapacityBytes = d.files.reduce((a, c) => a + c.size, 0);
+        const usedCapacity = bytesToHumanReadableUnits(usedCapacityBytes);
+        const usagePercentage = (usedCapacityBytes / d.size) * 100;
+
+        return {
+          ...d,
+          capacity,
+          usedCapacityBytes,
+          usedCapacity,
+          usagePercentage,
+        };
+      });
 
       if (searchStore.search === "") {
         return d;
