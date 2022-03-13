@@ -14,5 +14,10 @@ export const bytesToHumanReadableUnits = (bytes) => {
     return `${mib} MiB`;
   }
 
-  return `${gib} GiB`;
+  const tib = (gib / 1024).toFixed(2);
+  if (tib < 1) {
+    return `${gib} GiB`;
+  }
+
+  return `${tib} TiB`;
 };

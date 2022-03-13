@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import { createRouter, createWebHashHistory } from "vue-router";
+import Home from "@/views/Home.vue";
+import Devices from "@/views/Devices.vue";
 
 const routes = [
   {
@@ -7,10 +8,15 @@ const routes = [
     name: "Home",
     component: Home,
   },
+  {
+    path: "/devices",
+    name: "Devices",
+    component: Devices,
+  },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes,
 });
 

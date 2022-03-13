@@ -15,7 +15,14 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Devices</a>
+            <router-link
+              class="nav-link"
+              active-class="active"
+              aria-current-value="page"
+              :to="{ name: 'Devices' }"
+            >
+              Storage Devices
+            </router-link>
           </li>
         </ul>
       </div>
