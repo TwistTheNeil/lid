@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <SearchbarInput />
 
     <span class="mx-2">
