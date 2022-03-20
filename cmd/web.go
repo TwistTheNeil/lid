@@ -11,7 +11,7 @@ var webCmd = &cobra.Command{
 	Short: "Start the web service",
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: make config model
-		router.Start(drs, nrs)
+		router.Start(drs, frs)
 	},
 }
 

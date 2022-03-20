@@ -7,19 +7,19 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
-type Node struct {
+type File struct {
 	Name      string    `gorm:"primaryKey" json:"name"`
 	Size      int64     `json:"size"`
 	MD5       string    `gorm:"primaryKey" json:"hash"`
 	CreatedAt time.Time `json:"-"`
-	Devices   []*Device `gorm:"many2many:node_devices;" json:"devices"`
+	Devices   []*Device `gorm:"many2many:file_devices;" json:"devices"`
 }
 
 type NodeList struct {
-	Nodes []Node
+	Nodes []File
 }
 
-func (nl *NodeList) Append(n Node) {
+func (nl *NodeList) Append(n File) {
 	nl.Nodes = append(nl.Nodes, n)
 }
 

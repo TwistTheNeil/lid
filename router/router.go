@@ -8,12 +8,12 @@ import (
 )
 
 // TODO: make config model
-func Start(drs interfaces.DeviceRepository, nrs interfaces.NodeRepository) {
+func Start(drs interfaces.DeviceRepository, frs interfaces.FileRepository) {
 	router := echo.New()
 
 	router.Use(middleware.CORS())
 	router.Use(middleware.Logger())
-	controller := newController(drs, nrs)
+	controller := newController(drs, frs)
 
 	router.StaticFS("/", getFrontendAssets())
 	v1API := router.Group("/api/v1")

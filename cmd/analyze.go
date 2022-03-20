@@ -15,7 +15,7 @@ import (
 var save bool
 var refStorageDeviceName string
 
-func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan string, out chan<- models.Node, errored chan<- struct{}) {
+func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan string, out chan<- models.File, errored chan<- struct{}) {
 	defer wg.Done()
 
 	for filename := range in {
@@ -34,7 +34,7 @@ func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan strin
 		}
 
 		md5Hash := file_ops.MD5Hash(f)
-		out <- models.Node{Name: filepath.Base(filename), Size: fileStat.Size(), MD5: md5Hash}
+		out <- models.File{Name: filepath.Base(filename), Size: fileStat.Size(), MD5: md5Hash}
 		f.Close()
 	}
 }
@@ -67,7 +67,7 @@ var analyzeCmd = &cobra.Command{
 
 		files := disk_inventory.BuildFileList(args...)
 		var wg sync.WaitGroup
-		supplier, receiver, errored, done := make(chan string), make(chan models.Node), make(chan struct{}), make(chan struct{})
+		supplier, receiver, errored, done := make(chan string), make(chan models.File), make(chan struct{}), make(chan struct{})
 		received := 0
 
 		for i := 0; i < numRoutines; i++ {
@@ -106,7 +106,7 @@ var analyzeCmd = &cobra.Command{
 
 		if save {
 			for _, n := range nl.Nodes {
-				nrs.Create(n.Name, n.MD5, n.Size, refStorageDevice)
+				frs.Create(n.Name, n.MD5, n.Size, refStorageDevice)
 			}
 		}
 

@@ -9,14 +9,14 @@ import (
 
 type controller struct {
 	drs interfaces.DeviceRepository
-	nrs interfaces.NodeRepository
+	frs interfaces.FileRepository
 }
 
 var c controller
 
-func newController(drs interfaces.DeviceRepository, nrs interfaces.NodeRepository) controller {
+func newController(drs interfaces.DeviceRepository, frs interfaces.FileRepository) controller {
 	if (c == controller{}) {
-		c = controller{drs: drs, nrs: nrs}
+		c = controller{drs: drs, frs: frs}
 	}
 
 	return c
@@ -29,6 +29,6 @@ func (c controller) GetAllDevices(ctx echo.Context) error {
 }
 
 func (c controller) GetAllFiles(ctx echo.Context) error {
-	result, _ := c.nrs.FindAllPreload()
+	result, _ := c.frs.FindAllPreload()
 	return ctx.JSON(200, result)
 }

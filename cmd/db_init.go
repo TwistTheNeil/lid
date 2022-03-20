@@ -44,7 +44,7 @@ var dbInitCmd = &cobra.Command{
 			panic(err)
 		}
 
-		db.AutoMigrate(&models.Device{}, &models.Node{})
+		db.AutoMigrate(&models.Device{}, &models.File{})
 		sqlDB, err := db.DB()
 		if err != nil {
 			panic(err)
