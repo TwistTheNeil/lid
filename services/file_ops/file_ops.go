@@ -28,6 +28,6 @@ func MD5Hash(f *os.File) string {
 	}
 
 	computedHash := hex.EncodeToString(h.Sum(nil))
-	log.Info("computed hash", "node", f.Name(), "hash", computedHash)
+	log.Info("computed hash", "file", f.Name(), "hash", computedHash)
 	return computedHash
 }
