@@ -58,7 +58,7 @@ export default {
       }
 
       const fzf = new Fzf(f, {
-        selector: (i) => i.name,
+        selector: (i) => `${i.hash} ${i.name}`,
       });
 
       // We remove whitespace since fzf won't find a whitespace in certain
