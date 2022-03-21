@@ -28,27 +28,27 @@
 </template>
 
 <script>
-import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { computed, toRef } from "vue";
 import { Fzf } from "fzf";
 
-import { useFileStore } from "@/store/fileStore";
 import { useSearchStore } from "@/store/searchStore";
 import { bytesToHumanReadableUnits } from "@/services/dataSizeConversion";
 
 export default {
   name: "FileList",
-  setup() {
-    const fileStore = useFileStore();
+  props: {
+    files: Object,
+  },
+  setup(props) {
     const searchStore = useSearchStore();
-    const { files } = storeToRefs(fileStore);
+    const files = toRef(props, "files");
 
     const filteredFiles = computed(() => {
-      if (!files || files.value.length === 0) {
+      if (!files.value || files.value?.length === 0) {
         return [];
       }
 
-      const f = files.value.map((f) => ({
+      const f = files.value?.map((f) => ({
         ...f,
         size: bytesToHumanReadableUnits(f.size),
       }));

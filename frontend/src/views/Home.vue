@@ -10,7 +10,7 @@
       </small>
     </span>
 
-    <FileList />
+    <FileList :files="files" />
   </div>
 </template>
 
