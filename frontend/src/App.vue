@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onBeforeMount } from "vue";
 
 import { useFileStore } from "@/store/fileStore";
 import { useStorageDeviceStore } from "@/store/storageDeviceStore";
@@ -21,7 +21,7 @@ export default {
     const fileStore = useFileStore();
     const storageDevicesStore = useStorageDeviceStore();
 
-    onMounted(async () => {
+    onBeforeMount(async () => {
       await storageDevicesStore.refresh();
       await fileStore.refresh();
     });
