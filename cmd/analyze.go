@@ -81,6 +81,9 @@ var analyzeCmd = &cobra.Command{
 				select {
 				case f := <-receiver:
 					fl.Append(f)
+					if save {
+						frs.Create(f.Name, f.MD5, f.Size, refStorageDevice)
+					}
 					received++
 				case <-errored:
 					received++
@@ -103,12 +106,6 @@ var analyzeCmd = &cobra.Command{
 		close(errored)
 		close(done)
 		wg.Wait()
-
-		if save {
-			for _, f := range fl.Files {
-				frs.Create(f.Name, f.MD5, f.Size, refStorageDevice)
-			}
-		}
 
 		if tabulate {
 			fl.Pretty()
