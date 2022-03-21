@@ -4,7 +4,7 @@
       <tr>
         <th scope="col" width="10%">Hash</th>
         <th scope="col" width="10%">Size</th>
-        <th scope="col" width="10%">Devices</th>
+        <th scope="col" width="10%" v-if="extraColumns.devices">Devices</th>
         <th scope="col">Name</th>
       </tr>
     </thead>
@@ -12,7 +12,7 @@
       <tr v-for="file in filteredFiles" :key="file.hash">
         <td class="monospace">{{ file.hash }}</td>
         <td class="monospace" align="right">{{ file.size }}</td>
-        <td class="monospace">
+        <td class="monospace" v-if="extraColumns.devices">
           <span
             v-for="device in file.devices"
             :key="device.uuid"
@@ -38,6 +38,11 @@ export default {
   name: "FileList",
   props: {
     files: Object,
+    // booleans for { devices }
+    extraColumns: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   setup(props) {
     const searchStore = useSearchStore();

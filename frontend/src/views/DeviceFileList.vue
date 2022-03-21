@@ -14,7 +14,7 @@
         </small>
       </span>
 
-      <DeviceListing :files="queriedStorageDevice.files" />
+      <FileList :files="queriedStorageDevice.files" />
     </div>
   </div>
 </template>
@@ -26,14 +26,14 @@ import { computed } from "vue";
 
 import SearchbarInput from "@/components/SearchbarInput.vue";
 import { useStorageDeviceStore } from "@/store/storageDeviceStore";
-import DeviceListing from "@/components/DeviceListing.vue";
+import FileList from "@/components/FileList.vue";
 import { bytesToHumanReadableUnits } from "@/services/dataSizeConversion";
 
 export default {
   name: "DeviceFileList",
   components: {
     SearchbarInput,
-    DeviceListing,
+    FileList,
   },
   setup() {
     const route = useRoute();

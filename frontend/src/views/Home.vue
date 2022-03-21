@@ -11,7 +11,7 @@
         </small>
       </span>
 
-      <FileList :files="files" />
+      <FileList :files="files" :extraColumns="{ devices: true }" />
     </div>
   </div>
 </template>
