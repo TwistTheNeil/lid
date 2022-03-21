@@ -2,15 +2,17 @@
   <div>
     <SearchbarInput />
 
-    <span class="mx-2">
-      <small>
-        Tracking {{ files.length }} file{{ files.length === 1 ? "" : "s" }} ({{
-          totalStorageSpaceUsed
-        }})
-      </small>
-    </span>
+    <div v-if="files">
+      <span class="mx-2">
+        <small>
+          Tracking {{ files.length }} file{{ files.length === 1 ? "" : "s" }} (
+          {{ totalStorageSpaceUsed }}
+          )
+        </small>
+      </span>
 
-    <FileList :files="files" />
+      <FileList :files="files" />
+    </div>
   </div>
 </template>
 
@@ -21,7 +23,7 @@ import { computed } from "vue";
 import SearchbarInput from "@/components/SearchbarInput.vue";
 import FileList from "@/components/FileList.vue";
 import { useFileStore } from "@/store/fileStore";
-import { bytesToHumanReadableUnits } from "../services/dataSizeConversion";
+import { bytesToHumanReadableUnits } from "@/services/dataSizeConversion";
 
 export default {
   name: "Home",

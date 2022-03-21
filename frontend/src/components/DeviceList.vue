@@ -9,7 +9,13 @@
     </thead>
     <tbody>
       <tr v-for="device in filteredStorageDevices" :key="device.uuid">
-        <td class="monospace">{{ device.uuid }}</td>
+        <td class="monospace">
+          <router-link
+            :to="{ name: 'DeviceFileList', params: { uuid: device.uuid } }"
+          >
+            {{ device.uuid }}
+          </router-link>
+        </td>
         <td class="monospace" align="right">
           <div class="progress" style="height: 20px">
             <div
@@ -25,7 +31,13 @@
             ></div>
           </div>
         </td>
-        <td class="monospace">{{ device.name }}</td>
+        <td class="monospace">
+          <router-link
+            :to="{ name: 'DeviceFileList', params: { uuid: device.uuid } }"
+          >
+            {{ device.name }}
+          </router-link>
+        </td>
       </tr>
     </tbody>
   </table>
