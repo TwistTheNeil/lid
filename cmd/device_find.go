@@ -19,7 +19,7 @@ var queryFunc func(string) (models.Device, error)
 // deviceAddCmd represents the deviceAdd command
 var deviceFindCmd = &cobra.Command{
 	Use:   "find",
-	Short: "Add a device",
+	Short: "Find a storage device",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		log := logger.CreateLogger("device_prerun_find")
 		var err error

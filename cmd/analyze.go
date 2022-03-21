@@ -45,7 +45,7 @@ var analyzeCmd = &cobra.Command{
 	Short: "Analyze a set of directories and/or files",
 	Run: func(cmd *cobra.Command, args []string) {
 		log := logger.CreateLogger("analyze")
-		var nl models.NodeList
+		var fl models.FileList
 
 		log.Trace("analyze file called")
 
@@ -79,8 +79,8 @@ var analyzeCmd = &cobra.Command{
 		OUT:
 			for {
 				select {
-				case n := <-receiver:
-					nl.Append(n)
+				case f := <-receiver:
+					fl.Append(f)
 					received++
 				case <-errored:
 					received++
@@ -105,13 +105,13 @@ var analyzeCmd = &cobra.Command{
 		wg.Wait()
 
 		if save {
-			for _, n := range nl.Nodes {
-				frs.Create(n.Name, n.MD5, n.Size, refStorageDevice)
+			for _, f := range fl.Files {
+				frs.Create(f.Name, f.MD5, f.Size, refStorageDevice)
 			}
 		}
 
 		if tabulate {
-			nl.Pretty()
+			fl.Pretty()
 		}
 	},
 }

@@ -15,21 +15,21 @@ type File struct {
 	Devices   []*Device `gorm:"many2many:file_devices;" json:"devices"`
 }
 
-type NodeList struct {
-	Nodes []File
+type FileList struct {
+	Files []File
 }
 
-func (nl *NodeList) Append(n File) {
-	nl.Nodes = append(nl.Nodes, n)
+func (fl *FileList) Append(n File) {
+	fl.Files = append(fl.Files, n)
 }
 
-func (nl *NodeList) Pretty() {
+func (fl *FileList) Pretty() {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Hash", "File Name", "Size (bytes)"})
 
-	for _, n := range nl.Nodes {
-		t.AppendRow([]interface{}{n.MD5, n.Name, n.Size})
+	for _, f := range fl.Files {
+		t.AppendRow([]interface{}{f.MD5, f.Name, f.Size})
 	}
 	t.Render()
 }
