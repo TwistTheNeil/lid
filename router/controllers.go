@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"lid/interfaces"
 
 	"github.com/labstack/echo/v4"
@@ -24,7 +23,6 @@ func newController(drs interfaces.DeviceRepository, frs interfaces.FileRepositor
 
 func (c controller) GetAllDevices(ctx echo.Context) error {
 	result, _ := c.drs.FindAllPreload()
-	fmt.Printf("%#v", result)
 	return ctx.JSON(200, result)
 }
 
