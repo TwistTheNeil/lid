@@ -13,13 +13,14 @@
         <td class="monospace">{{ file.hash }}</td>
         <td class="monospace" align="right">{{ file.size }}</td>
         <td class="monospace" v-if="extraColumns.devices">
-          <span
+          <router-link
             v-for="device in file.devices"
             :key="device.uuid"
             class="badge rounded-pill bg-success"
+            :to="{ name: 'DeviceFileList', params: { uuid: device.uuid } }"
           >
             {{ device.name }}
-          </span>
+          </router-link>
         </td>
         <td>{{ file.name }}</td>
       </tr>
