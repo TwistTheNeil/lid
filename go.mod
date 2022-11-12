@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.5
-	github.com/labstack/echo/v4 v4.7.0
+	github.com/labstack/echo/v4 v4.9.0
 	github.com/mattn/go-sqlite3 v1.14.11
 	github.com/rs/zerolog v1.26.1
 	github.com/spf13/cobra v1.6.1
