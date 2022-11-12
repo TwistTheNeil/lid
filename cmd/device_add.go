@@ -21,6 +21,9 @@ var deviceAddCmd = &cobra.Command{
 
 		// TODO: https://github.com/spf13/cobra/issues/1216
 		// work around for mutually exclusive flags
+
+		// TODO: fixed in https://github.com/spf13/cobra/pull/1654/files
+		// MarkFlagsMutuallyExclusive
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
 			log.Error("something went wrong specifying device --name", err)

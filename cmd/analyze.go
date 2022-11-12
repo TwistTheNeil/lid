@@ -119,5 +119,6 @@ func init() {
 	analyzeCmd.Flags().IntP("routines", "r", 1, "number of go routines to use while hashing")
 	analyzeCmd.Flags().BoolVar(&save, "save", false, "save analyzed files to db")
 	// TODO: figure out what to do about the storage name. it is necessary with --save
+	// TODO: MarkFlagsRequiredTogether is probably not quite what we need but take a look anyway https://github.com/spf13/cobra/pull/1654/files
 	analyzeCmd.Flags().StringVar(&refStorageDeviceName, "device", "", "associate analyzed files to this device")
 }
