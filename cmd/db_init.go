@@ -9,8 +9,6 @@ import (
 	"os"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -21,14 +19,7 @@ var dbInitCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize a sqlite3 database",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
-
-		switch debugLevel {
-		case -1, 0, 1, 2, 3, 4, 5, 6, 7:
-			zerolog.SetGlobalLevel(zerolog.Level(debugLevel))
-		default:
-			zerolog.SetGlobalLevel(zerolog.InfoLevel)
-		}
+		// don't run the root PersistentPreRun for this command
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		log := logger.CreateLogger("db_init.run")

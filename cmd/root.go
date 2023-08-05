@@ -21,15 +21,6 @@ var rootCmd = &cobra.Command{
 	Use:   "lid",
 	Short: "Utility to help associate files with running drives and backup drives",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
-
-		switch debugLevel {
-		case -1, 0, 1, 2, 3, 4, 5, 6, 7:
-			zerolog.SetGlobalLevel(zerolog.Level(debugLevel))
-		default:
-			zerolog.SetGlobalLevel(zerolog.InfoLevel)
-		}
-
 		sqlite3db.Open(database)
 		db := sqlite3db.Get()
 		drs = repositories.NewGORMDeviceRepositoryService(db.DB)
@@ -47,6 +38,15 @@ func Execute() {
 }
 
 func init() {
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
+	switch debugLevel {
+	case -1, 0, 1, 2, 3, 4, 5, 6, 7:
+		zerolog.SetGlobalLevel(zerolog.Level(debugLevel))
+	default:
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+
 	rootCmd.PersistentFlags().Int8VarP(&debugLevel, "debuglevel", "d", 1, "debug level")
 	rootCmd.PersistentFlags().StringVar(&database, "db", "", "database (sqlite) file")
 	rootCmd.MarkPersistentFlagRequired("db")
