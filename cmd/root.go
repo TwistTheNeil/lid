@@ -26,6 +26,9 @@ var rootCmd = &cobra.Command{
 		drs = repositories.NewGORMDeviceRepositoryService(db.DB)
 		frs = repositories.NewGORMNodeRepositoryService(db.DB)
 	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		sqlite3db.Close()
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

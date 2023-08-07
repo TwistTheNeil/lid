@@ -23,3 +23,12 @@ func Open(dsn string) {
 func Get() sqlite3DB {
 	return db
 }
+
+func Close() error {
+	dbCtx, err := db.DB.DB()
+	if err != nil {
+		panic(err)
+	}
+	dbCtx.Close()
+	return nil
+}
