@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -19,11 +18,6 @@ var deviceAddCmd = &cobra.Command{
 		log := logger.CreateLogger("device_add")
 		log.Trace("device_add called")
 
-		// TODO: https://github.com/spf13/cobra/issues/1216
-		// work around for mutually exclusive flags
-
-		// TODO: fixed in https://github.com/spf13/cobra/pull/1654/files
-		// MarkFlagsMutuallyExclusive
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
 			log.Error("something went wrong specifying device --name", err)
@@ -56,4 +50,5 @@ func init() {
 	deviceAddCmd.Flags().Int64("size", 0, "device size")
 	deviceAddCmd.MarkFlagRequired("name")
 	deviceAddCmd.MarkFlagRequired("uuid")
+	deviceAddCmd.MarkFlagRequired("size")
 }
