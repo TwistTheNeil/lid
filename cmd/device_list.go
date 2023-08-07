@@ -1,10 +1,12 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"lid/services/logger"
 	"os"
 
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
 
@@ -22,10 +24,32 @@ var deviceListCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		fmt.Printf("%+v", l)
+		if j, _ := cmd.Flags().GetBool("json"); j {
+			b, _ := json.MarshalIndent(l, "", "  ")
+			fmt.Printf("%v", string(b))
+			return
+		}
+
+		t := table.NewWriter()
+		t.AppendHeader(table.Row{
+			"UUID",
+			"Name",
+			"Size",
+		})
+
+		for _, v := range l {
+			t.AppendRow(table.Row{
+				v.UUID,
+				v.Name,
+				v.Size,
+			})
+		}
+
+		fmt.Println(t.Render())
 	},
 }
 
 func init() {
 	deviceCmd.AddCommand(deviceListCmd)
+	deviceListCmd.Flags().Bool("json", false, "print list as json")
 }
