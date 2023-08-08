@@ -19,6 +19,6 @@ lid
 
 .vscode
 
-test.db
+test.db*
 
 dist
