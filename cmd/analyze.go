@@ -13,7 +13,7 @@ import (
 )
 
 var save bool
-var refStorageDeviceName string
+var refStorageDeviceUUID string
 
 func analyzeNode(log *logger.LoggerInstance, wg *sync.WaitGroup, in <-chan string, out chan<- models.File, errored chan<- struct{}) {
 	defer wg.Done()
@@ -46,12 +46,16 @@ var analyzeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log := logger.CreateLogger("analyze")
 		var fl models.FileList
+		var refStorageDevice models.Device
 
 		log.Trace("analyze file called")
 
-		refStorageDevice, err := drs.FindByName(refStorageDeviceName)
-		if err != nil {
-			panic(err)
+		if save {
+			var err error
+			refStorageDevice, err = drs.FindByUUID(refStorageDeviceUUID)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		tabulate, err := cmd.Flags().GetBool("tabulate")
@@ -118,7 +122,6 @@ func init() {
 	analyzeCmd.PersistentFlags().BoolP("tabulate", "t", false, "Tabulate analysis")
 	analyzeCmd.Flags().IntP("routines", "r", 1, "number of go routines to use while hashing")
 	analyzeCmd.Flags().BoolVar(&save, "save", false, "save analyzed files to db")
-	// TODO: figure out what to do about the storage name. it is necessary with --save
-	// TODO: MarkFlagsRequiredTogether is probably not quite what we need but take a look anyway https://github.com/spf13/cobra/pull/1654/files
-	analyzeCmd.Flags().StringVar(&refStorageDeviceName, "device", "", "associate analyzed files to this device")
+	analyzeCmd.Flags().StringVar(&refStorageDeviceUUID, "device-uuid", "", "associate analyzed files to this storage device by uuid")
+	analyzeCmd.MarkFlagsRequiredTogether("save", "device-uuid")
 }
