@@ -15,6 +15,7 @@ var debugLevel int8
 var database string
 var drs interfaces.DeviceRepository
 var frs interfaces.FileRepository
+var hrs interfaces.HostRepository
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -25,6 +26,7 @@ var rootCmd = &cobra.Command{
 		db := sqlite3db.Get()
 		drs = repositories.NewGORMDeviceRepositoryService(db.DB)
 		frs = repositories.NewGORMNodeRepositoryService(db.DB)
+		hrs = repositories.NewGORMHostRepositoryService(db.DB)
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
 		sqlite3db.Close()

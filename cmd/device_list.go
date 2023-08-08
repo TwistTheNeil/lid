@@ -33,6 +33,7 @@ var deviceListCmd = &cobra.Command{
 		t := table.NewWriter()
 		t.AppendHeader(table.Row{
 			"UUID",
+			"Host",
 			"Name",
 			"Size",
 		})
@@ -40,6 +41,7 @@ var deviceListCmd = &cobra.Command{
 		for _, v := range l {
 			t.AppendRow(table.Row{
 				v.UUID,
+				v.Host,
 				v.Name,
 				v.Size,
 			})

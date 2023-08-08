@@ -23,8 +23,8 @@ func NewGORMDeviceRepositoryService(db *gorm.DB) GORMDeviceRepositoryService {
 	return deviceRepositoryService
 }
 
-func (drs GORMDeviceRepositoryService) Create(device_name string, device_uuid string, size int64) error {
-	d := models.Device{Name: device_name, UUID: device_uuid, Size: size}
+func (drs GORMDeviceRepositoryService) Create(device_name, device_uuid, host_name string, size int64) error {
+	d := models.Device{Name: device_name, Host: host_name, UUID: device_uuid, Size: size}
 	err := drs.db.Create(&d).Error
 	return err
 }

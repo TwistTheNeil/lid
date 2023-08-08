@@ -7,5 +7,6 @@ type Device struct {
 	Size      int64     `gorm:"not null" json:"size"`
 	UUID      string    `gorm:"primaryKey" json:"uuid"`
 	CreatedAt time.Time `json:"-"`
+	Host      string    `gorm:"not null" json:"host"`
 	Files     []*File   `gorm:"many2many:file_devices;" json:"files,omitempty"`
 }
