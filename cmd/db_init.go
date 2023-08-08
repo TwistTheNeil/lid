@@ -8,10 +8,9 @@ import (
 	"lid/services/logger"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	sqlite3db "lid/services/db"
+
 	"github.com/spf13/cobra"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
 // dbInitCmd represents the dbInit command
@@ -31,18 +30,10 @@ var dbInitCmd = &cobra.Command{
 		}
 		defer f.Close()
 
-		db, err := gorm.Open(sqlite.Open(database), &gorm.Config{})
-		if err != nil {
-			panic(err)
-		}
-
-		db.AutoMigrate(&models.Device{}, &models.File{})
-		sqlDB, err := db.DB()
-		if err != nil {
-			panic(err)
-		}
-
-		sqlDB.Close()
+		sqlite3db.Open(database)
+		db := sqlite3db.Get()
+		db.DB.AutoMigrate(&models.Device{}, &models.File{}, &models.Host{})
+		sqlite3db.Close()
 
 		log.Info("Database initialized at " + database)
 	},
