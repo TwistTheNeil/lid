@@ -5,7 +5,6 @@ go 1.17
 require (
 	github.com/jedib0t/go-pretty/v6 v6.4.6
 	github.com/labstack/echo/v4 v4.9.0
-	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/rs/zerolog v1.26.1
 	github.com/spf13/cobra v1.7.1-0.20230723113155-fd865a44e3c4
 	gorm.io/driver/sqlite v1.5.2
@@ -21,6 +20,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
+	github.com/mattn/go-sqlite3 v1.14.17 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
