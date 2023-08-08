@@ -54,7 +54,8 @@ var analyzeCmd = &cobra.Command{
 			var err error
 			refStorageDevice, err = drs.FindByUUID(refStorageDeviceUUID)
 			if err != nil {
-				panic(err)
+				log.Fatal("device `"+refStorageDeviceUUID+"` couldn't be loaded from the db", err)
+				return
 			}
 		}
 
