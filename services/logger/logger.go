@@ -49,3 +49,8 @@ func (li LoggerInstance) Error(msg string, err error, str ...string) {
 	l := li.Logger.Error().Err(err)
 	send(l, msg, str)
 }
+
+func (li LoggerInstance) Fatal(msg string, err error, str ...string) {
+	l := li.Logger.Error().Err(err)
+	send(l, msg, str)
+}
