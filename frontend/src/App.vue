@@ -10,7 +10,7 @@ import { onBeforeMount } from "vue";
 
 import { useFileStore } from "@/store/fileStore";
 import { useStorageDeviceStore } from "@/store/storageDeviceStore";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
   name: "Home",

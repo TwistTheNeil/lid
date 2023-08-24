@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import Devices from "@/views/Devices.vue";
-import DeviceFileList from "@/views/DeviceFileList";
+import DeviceFileList from "@/views/DeviceFileList.vue";
 import { useSearchStore } from "@/store/searchStore";
 
 const routes = [
