@@ -1,23 +1,11 @@
 export const bytesToHumanReadableUnits = (bytes) => {
-  const kib = (bytes / 1024).toFixed(2);
-  if (kib < 1) {
-    return `${bytes} B`;
-  }
+  const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
+  const base = 1024;
 
-  const mib = (kib / 1024).toFixed(2);
-  if (mib < 1) {
-    return `${kib} KiB`;
-  }
+  const logArg = Math.floor(Math.log(bytes)/Math.log(base));
+  const unit = units[logArg];
+  const fixedValue = (Math.floor(bytes/Math.pow(base, logArg))).toFixed(2);
 
-  const gib = (mib / 1024).toFixed(2);
-  if (gib < 1) {
-    return `${mib} MiB`;
-  }
 
-  const tib = (gib / 1024).toFixed(2);
-  if (tib < 1) {
-    return `${gib} GiB`;
-  }
-
-  return `${tib} TiB`;
+  return `${fixedValue} ${unit}`;
 };
